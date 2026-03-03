@@ -2,6 +2,7 @@ from fastapi import APIRouter
 from app.models.schema import ScenarioInput
 from app.reasoning.plain_llm import generate_reasoning
 from app.reasoning.rule_engine import rule_based_analysis
+from app.reasoning.rag_llm import generate_rag_reasoning
 from app.db.database import SessionLocal
 from app.db.models import DecisionLog
 from app.utils.sanitize import clean_floats
@@ -52,6 +53,11 @@ def compare_models(scenario: ScenarioInput):
     hybrid_ttc      = llm_result.get("metrics", {}).get("min_ttc")
     hybrid_latency  = llm_result.get("latency", {}).get("total_ms", 0.0)
 
+    # ── 4. RAG LLM ────────────────────────────────────────────────
+    rag_start = time.time()
+    rag_result = generate_rag_reasoning(scenario)
+    rag_time = round((time.time() - rag_start) * 1000, 2)
+
     response = {
         "scenario": scenario.dict(),
         "comparison": {
@@ -79,12 +85,32 @@ def compare_models(scenario: ScenarioInput):
                 "confidence":        llm_result.get("confidence"),
                 "disagreement_level": llm_result.get("disagreement_level", "NONE"),
                 "latency_ms":        hybrid_latency
+            },
+            "rag_llm": {
+                "decision":        rag_result.get("decisions", {}).get("llm", "UNKNOWN"),
+                "final_decision":  rag_result.get("decisions", {}).get("final", "UNKNOWN"),
+                "override_applied": rag_result.get("decisions", {}).get("override", False),
+                "confidence":      rag_result.get("confidence"),
+                "retrieved_rules": rag_result.get("retrieved_rules", []),
+                "steps":           rag_result.get("steps", []),
+                "latency_ms":      rag_time
             }
         }
     }
 
     return clean_floats(response)
 
+@router.post("/run-rag")
+def run_rag_scenario(scenario: ScenarioInput):
+    result = generate_rag_reasoning(scenario)
+    full_response = {
+        "scenario": scenario.dict(),
+        **result
+    }
+    safe_response = clean_floats(full_response)
+    save_to_db(safe_response)
+    return safe_response
+    
 @router.get("/check-db")
 def check_db():
     db = SessionLocal()
