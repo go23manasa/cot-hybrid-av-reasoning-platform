@@ -23,5 +23,7 @@ class DecisionLog(Base):
 
     confidence = Column(Float)
     total_latency_ms = Column(Float)
-
+    disagreement_level = Column(String)    
+    weather = Column(String) 
+    
     created_at = Column(DateTime, default=datetime.utcnow)

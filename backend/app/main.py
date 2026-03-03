@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from app.api.routes import router
+from app.utils.sanitize import clean_floats
 
 app = FastAPI()
 
@@ -86,3 +87,90 @@ def risk_analysis(db: Session = Depends(get_db)):
             if high_risk else 0
         )
     }
+
+@app.get("/analytics/weather")
+def analytics_weather(db: Session = Depends(get_db)):
+
+    results = db.query(
+        DecisionLog.weather,
+        DecisionLog.final_decision,
+        func.count(DecisionLog.id)
+    ).filter(
+        DecisionLog.weather != None
+    ).group_by(
+        DecisionLog.weather,
+        DecisionLog.final_decision
+    ).all()
+
+    # Build nested dict: { "clear": {"STOP": 5, "CONTINUE": 3}, "rain": {...} }
+    breakdown = {}
+    for weather, decision, count in results:
+        if weather not in breakdown:
+            breakdown[weather] = {}
+        breakdown[weather][decision or "UNKNOWN"] = count
+
+    # Also get override rate per weather
+    weather_overrides = db.query(
+        DecisionLog.weather,
+        func.count(DecisionLog.id)
+    ).filter(
+        DecisionLog.override == True,
+        DecisionLog.weather != None
+    ).group_by(DecisionLog.weather).all()
+
+    override_by_weather = {w: c for w, c in weather_overrides}
+
+    weather_totals = db.query(
+        DecisionLog.weather,
+        func.count(DecisionLog.id)
+    ).filter(
+        DecisionLog.weather != None
+    ).group_by(DecisionLog.weather).all()
+
+    override_rates = {}
+    for w, total in weather_totals:
+        overrides = override_by_weather.get(w, 0)
+        override_rates[w] = round(overrides / total, 3) if total else 0
+
+    return clean_floats({
+        "decision_by_weather": breakdown,
+        "override_rate_by_weather": override_rates
+    })
+
+@app.get("/analytics/disagreements")
+def analytics_disagreements(db: Session = Depends(get_db)):
+
+    results = db.query(
+        DecisionLog.disagreement_level,
+        func.count(DecisionLog.id)
+    ).filter(
+        DecisionLog.disagreement_level != None
+    ).group_by(
+        DecisionLog.disagreement_level
+    ).all()
+
+    distribution = {level: count for level, count in results}
+
+    # Fill in zeros for any missing levels
+    for level in ["NONE", "LOW", "MODERATE", "CRITICAL"]:
+        if level not in distribution:
+            distribution[level] = 0
+
+    total = sum(distribution.values())
+
+    # How often does CRITICAL disagreement happen?
+    critical_count = distribution.get("CRITICAL", 0)
+    critical_rate = round(critical_count / total, 3) if total else 0
+
+    # Of CRITICAL disagreements, how many were overridden?
+    critical_overrides = db.query(func.count(DecisionLog.id)).filter(
+        DecisionLog.disagreement_level == "CRITICAL",
+        DecisionLog.override == True
+    ).scalar()
+
+    return clean_floats({
+        "disagreement_distribution": distribution,
+        "total_with_disagreement": total,
+        "critical_rate": critical_rate,
+        "critical_override_rate": round(critical_overrides / critical_count, 3) if critical_count else 0
+    })
