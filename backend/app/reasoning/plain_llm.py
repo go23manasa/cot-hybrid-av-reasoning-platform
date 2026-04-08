@@ -115,41 +115,41 @@ Weather: {scenario.weather}
         # -------------------------
         # LOGGING (Enhanced)
         # -------------------------
-        log_decision({
-            "timestamp": time.time(),
+        # log_decision({
+        #     "timestamp": time.time(),
 
-            "scenario": {
-                "objects": [
-                    {"type": obj.type, "distance": obj.distance}
-                    for obj in scenario.objects
-                ],
-                "ego_speed": scenario.ego_speed,
-                "weather": scenario.weather
-            },
+        #     "scenario": {
+        #         "objects": [
+        #             {"type": obj.type, "distance": obj.distance}
+        #             for obj in scenario.objects
+        #         ],
+        #         "ego_speed": scenario.ego_speed,
+        #         "weather": scenario.weather
+        #     },
 
-            "decisions": {
-                "llm": llm_decision,
-                "rule": rule_decision,
-                "final": final_decision,
-                "override": override
-            },
+        #     "decisions": {
+        #         "llm": llm_decision,
+        #         "rule": rule_decision,
+        #         "final": final_decision,
+        #         "override": override
+        #     },
 
-            "metrics": {
-                "risk_score": analysis["risk_score"],
-                "min_ttc": analysis["min_ttc"],
-                "stopping_distance": analysis["stopping_distance"],
-                "safety_level": analysis["safety_level"]
-            },
+        #     "metrics": {
+        #         "risk_score": analysis["risk_score"],
+        #         "min_ttc": analysis["min_ttc"],
+        #         "stopping_distance": analysis["stopping_distance"],
+        #         "safety_level": analysis["safety_level"]
+        #     },
 
-            "confidence": confidence,
-            "confidence_warning": confidence_warning,
-            "disagreement_level": disagreement_level,
-            "latency": {
-                "llm_ms": llm_latency,
-                "rule_ms": rule_latency,
-                "total_ms": total_latency
-            }
-        })
+        #     "confidence": confidence,
+        #     "confidence_warning": confidence_warning,
+        #     "disagreement_level": disagreement_level,
+        #     "latency": {
+        #         "llm_ms": llm_latency,
+        #         "rule_ms": rule_latency,
+        #         "total_ms": total_latency
+        #     }
+        # })
 
         # -------------------------
         # FINAL API RESPONSE
