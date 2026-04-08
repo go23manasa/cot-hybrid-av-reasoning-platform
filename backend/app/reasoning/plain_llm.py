@@ -3,7 +3,7 @@ import time
 from dotenv import load_dotenv
 from openai import OpenAI
 from app.reasoning.rule_engine import rule_based_analysis
-from app.utils.logger import log_decision
+#from app.utils.logger import log_decision
 
 load_dotenv()
 
