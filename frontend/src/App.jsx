@@ -1,12 +1,9 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
 import Compare from "./pages/Compare";
 
-function Home() {
-  return <h1>Simulation Page</h1>;
-}
-
 function Analytics() {
-  return <h1>Analytics Page</h1>;
+  return <h1 className="text-white p-6">Analytics Page</h1>;
 }
 
 function App() {
