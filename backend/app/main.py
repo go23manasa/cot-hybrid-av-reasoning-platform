@@ -181,3 +181,13 @@ def analytics_disagreements(db: Session = Depends(get_db)):
         "critical_rate": critical_rate,
         "critical_override_rate": round(critical_overrides / critical_count, 3) if critical_count else 0
     })
+
+from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # for now
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
