@@ -1,9 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-
-function Compare() {
-  return <h1 className="text-white p-6">Compare Page</h1>;
-}
+import Compare from "./pages/Compare";
 
 function Analytics() {
   return <h1 className="text-white p-6">Analytics Page</h1>;
