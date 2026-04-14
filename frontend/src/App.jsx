@@ -1,11 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Compare from "./pages/Compare";
 
 function Home() {
   return <h1>Simulation Page</h1>;
-}
-
-function Compare() {
-  return <h1>Compare Page</h1>;
 }
 
 function Analytics() {
