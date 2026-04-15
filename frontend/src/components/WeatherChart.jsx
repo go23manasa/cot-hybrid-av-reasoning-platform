@@ -1,6 +1,7 @@
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 
 const WeatherChart = ({ data }) => {
+    if (!data) return null;
   return (
     <div className="bg-zinc-900 p-4 rounded-xl">
       <h2>Weather Breakdown</h2>

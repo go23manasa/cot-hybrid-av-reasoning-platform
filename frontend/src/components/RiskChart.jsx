@@ -1,7 +1,8 @@
 import { PieChart, Pie, Tooltip, ResponsiveContainer } from "recharts";
 
 const RiskChart = ({ data }) => {
-  const chartData = Object.entries(data).map(([key, value]) => ({
+    if (!data) return null;
+    const chartData = Object.entries(data).map(([key, value]) => ({
     name: key,
     value,
   }));

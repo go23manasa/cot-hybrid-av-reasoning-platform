@@ -1,7 +1,8 @@
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 
 const DisagreementChart = ({ data }) => {
-  const chartData = Object.entries(data.counts).map(([key, value]) => ({
+    if (!data || !data.counts) return null;
+    const chartData = Object.entries(data.counts).map(([key, value]) => ({
     type: key,
     value,
   }));
