@@ -144,4 +144,7 @@ def save_to_db(data):
     finally:
         db.close()
 
-
+try:
+    save_to_db(safe_response)
+except Exception as e:
+    print("DB ERROR:", e)
