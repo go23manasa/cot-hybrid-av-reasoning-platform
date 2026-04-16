@@ -21,12 +21,12 @@ const Compare = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white p-6">
-      <h1 className="text-2xl font-bold mb-4">Compare Models</h1>
+    <div className="min-h-screen bg-black text-white p-6 space-y-6">
+      <h1 className="text-3xl font-bold">Compare Models</h1>
 
       <CompareForm onSubmit={handleCompare} loading={loading} />
 
-      <CompareGrid data={data} />
+      {data && <CompareGrid data={data} />}
     </div>
   );
 };
