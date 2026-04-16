@@ -1,7 +1,8 @@
 import axios from 'axios'
 
 const API = axios.create({
-  baseURL: '/api',   // 🔥 IMPORTANT
+  //baseURL: '/api',   // 🔥 IMPORTANT
+  baseURL: 'http://127.0.0.1:8000'
 })
 
 export const runScenario = (data) => API.post('/run', data)
