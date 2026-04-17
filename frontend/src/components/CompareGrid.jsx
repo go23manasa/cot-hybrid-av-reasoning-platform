@@ -36,7 +36,7 @@ const CompareCard = ({ title, data, isBest, isDisagree }) => {
       </p>
 
       <p className="text-gray-400">
-        Latency: <span className="text-white">{data.latency} ms</span>
+        Latency: <span className="text-white">{data.latency_ms} ms</span>
       </p>
 
       {/* RAG Rules */}
