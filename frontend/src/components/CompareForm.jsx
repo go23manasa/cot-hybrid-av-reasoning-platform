@@ -14,7 +14,18 @@ const CompareForm = ({ onSubmit, loading }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(form);
+    const payload = {
+      objects: [
+        {
+          type: form.object_type,
+          distance: Number(form.distance),
+        }
+      ],
+      ego_speed: Number(form.speed),
+      weather: form.weather,
+      timestamp: new Date().toISOString()
+    };
+    onSubmit(payload);
   };
 
   return (
@@ -22,42 +33,50 @@ const CompareForm = ({ onSubmit, loading }) => {
       onSubmit={handleSubmit}
       className="bg-zinc-900 p-5 rounded-xl shadow-lg space-y-4 border border-zinc-700"
     >
+      {/* Object Type */}
       <select
         name="object_type"
+        value={form.object_type}
         onChange={handleChange}
         className="w-full p-2 bg-black text-white border border-zinc-700 rounded"
       >
-        <option>pedestrian</option>
-        <option>car</option>
-        <option>truck</option>
-        <option>cyclist</option>
+        <option value="pedestrian">pedestrian</option>
+        <option value="car">car</option>
+        <option value="truck">truck</option>
+        <option value="cyclist">cyclist</option>
       </select>
 
+      {/* Distance */}
       <input
         type="number"
         name="distance"
+        value={form.distance}
         placeholder="Distance (m)"
         onChange={handleChange}
         className="w-full p-2 bg-black text-white border border-zinc-700 rounded placeholder-gray-400"
       />
 
+      {/* Speed */}
       <input
         type="number"
         name="speed"
+        value={form.speed}
         placeholder="Speed (km/h)"
         onChange={handleChange}
         className="w-full p-2 bg-black text-white border border-zinc-700 rounded placeholder-gray-400"
       />
 
+      {/* Weather */}
       <select
         name="weather"
+        value={form.weather}
         onChange={handleChange}
         className="w-full p-2 bg-black text-white border border-zinc-700 rounded"
       >
-        <option>clear</option>
-        <option>rain</option>
-        <option>fog</option>
-        <option>snow</option>
+        <option value="clear">clear</option>
+        <option value="rain">rain</option>
+        <option value="fog">fog</option>
+        <option value="snow">snow</option>
       </select>
 
       <button
