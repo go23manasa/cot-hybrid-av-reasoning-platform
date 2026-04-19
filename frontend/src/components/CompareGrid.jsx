@@ -68,7 +68,7 @@ const CompareGrid = ({ data }) => {
   const hybridDecision = data.hybrid?.decision;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8">
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
       
       <CompareCard
         title="Plain LLM"

@@ -3,10 +3,6 @@ import Home from "./pages/Home";
 import Compare from "./pages/Compare";
 import Analytics from "./pages/Analytics";
 
-// function Analytics() {
-//   return <h1 className="text-white p-6">Analytics Page</h1>;
-// }
-
 function App() {
   return (
     <BrowserRouter>

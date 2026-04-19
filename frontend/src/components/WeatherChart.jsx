@@ -11,9 +11,10 @@ const WeatherChart = ({ data }) => {
           <XAxis dataKey="weather" stroke="#fff" />
           <YAxis stroke="#fff" />
           <Tooltip />
-          <Bar dataKey="STOP" />
-          <Bar dataKey="SLOW_DOWN" />
-          <Bar dataKey="CONTINUE" />
+          {/* Color-coded bars */}
+          <Bar dataKey="STOP" fill="#ef4444" />        {/* red */}
+          <Bar dataKey="SLOW_DOWN" fill="#f59e0b" />   {/* yellow */}
+          <Bar dataKey="CONTINUE" fill="#22c55e" />    {/* green */}
         </BarChart>
       </ResponsiveContainer>
     </div>

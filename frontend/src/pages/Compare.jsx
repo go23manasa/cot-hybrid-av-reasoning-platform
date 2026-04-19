@@ -48,14 +48,30 @@ const Compare = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white p-6 space-y-6">
-      <h1 className="text-3xl font-bold">Compare Models</h1>
+    <div className="min-h-screen bg-black text-white p-6">
+  <h1 className="text-3xl font-bold mb-6">Compare Models</h1>
 
+  <div className="flex gap-6">
+
+    {/* LEFT PANEL */}
+    <div className="w-[320px] flex-shrink-0">
       <CompareForm onSubmit={handleCompare} loading={loading} />
-
-      {data && <CompareGrid data={data} />}
     </div>
-  );
+
+    {/* RIGHT PANEL */}
+    <div className="flex-1 bg-zinc-900 rounded-xl p-6">
+      {data ? (
+        <CompareGrid data={data} />
+      ) : (
+        <p className="text-gray-400 text-center mt-20">
+          Run a simulation to see results
+        </p>
+      )}
+    </div>
+
+  </div>
+</div>
+);
 };
 
 export default Compare;
