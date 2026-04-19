@@ -107,10 +107,13 @@ const Analytics = () => {
       <h1 className="text-3xl font-bold">Analytics Dashboard</h1>
 
       <StatCards data={summary} />
-      <DecisionChart data={summary.decision_distribution} />
-      <RiskChart data={risk} />
-      <WeatherChart data={weather} />
-      <DisagreementChart data={disagreement} />
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <DecisionChart data={summary.decision_distribution} />
+        <RiskChart data={risk} />
+        <WeatherChart data={weather} />
+        <DisagreementChart data={disagreement} />
+      </div>
     </div>
   );
 };
